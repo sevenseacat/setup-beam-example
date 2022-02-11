@@ -1,0 +1,17 @@
+on: push
+
+jobs:
+  test:
+    runs-on: windows-2019
+    steps:
+      - uses: actions/checkout@v2
+      - uses: erlef/setup-beam@v1
+        with:
+          otp-version: '24'
+          rebar3-version: '3.16.1'
+      - run: |
+          $ErlExec = Get-ChildItem -Path "C:/Program Files/" -Recurse -Depth 2 -Filter 'erl.exe' -Name | ForEach-Object { Write-Output "C:/Program Files/$_" }
+          $ErlPath = Split-Path -Path "$ErlExec"
+          "ERL_LIB=$ErlPath/../lib" | Out-File -FilePath $Env:GITHUB_ENV -Encoding utf8 -Append
+      - run: |
+          Dir "${Env:ERL_LIB}"
