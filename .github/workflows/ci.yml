@@ -3,23 +3,11 @@ on:
   - workflow_dispatch
 
 jobs:
-  test-guess:
+  test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: paulo-ferraz-oliveira/setup-beam@main
+      - uses: erlef/setup-beam@v1
         with:
-          elixir-version: '1.10'
-          otp-version: 24
-      - uses: paulo-ferraz-oliveira/setup-beam@main
-        with:
-          elixir-version: '1.10'
-          otp-version: 25
-      - uses: paulo-ferraz-oliveira/setup-beam@main
-        with:
-          elixir-version: '1.10'
-          otp-version: '24.0'
-      - uses: paulo-ferraz-oliveira/setup-beam@main
-        with:
-          elixir-version: '1.10'
-          otp-version: '25.0'
+          elixir-version: '1.12'
+          otp-version: '25'
