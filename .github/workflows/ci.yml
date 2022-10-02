@@ -11,8 +11,4 @@ jobs:
         with:
           elixir-version: '1.14.0'
           otp-version: 'master'
-      - uses: paulo-ferraz-oliveira/setup-beam@feature/otp-as-master
-        with:
-          elixir-version: '1.14.0'
-          otp-version: 'master'
           version-type: 'strict'
