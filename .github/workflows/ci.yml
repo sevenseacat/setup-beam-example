@@ -7,8 +7,21 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: paulo-ferraz-oliveira/setup-beam@feature/otp-as-master
+      - uses: paulo-ferraz-oliveira/setup-beam@feature/dot_tool-versions-as-input
+        name: Should not fail
         with:
-          elixir-version: '1.14.0'
-          otp-version: 'master'
+          version-file: '.tool-versions'
           version-type: 'strict'
+        if: always()
+      - uses: paulo-ferraz-oliveira/setup-beam@feature/dot_tool-versions-as-input
+        name: Should fail (no strict)
+        with:
+          version-file: '.tool-versions'
+        if: always()
+      - uses: paulo-ferraz-oliveira/setup-beam@feature/dot_tool-versions-as-input
+        name: Should fail (version collision)
+        with:
+          version-file: '.tool-versions'
+          version-type: 'strict'
+          elixir-version: 1.14.0
+        if: always()
