@@ -1,4 +1,5 @@
-on:
+---
+"on":
   - push
   - workflow_dispatch
 
@@ -6,22 +7,15 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: paulo-ferraz-oliveira/setup-beam@feature/dot_tool-versions-as-input
-        name: Should not fail
-        with:
-          version-file: '.tool-versions'
-          version-type: 'strict'
-        if: always()
-      - uses: paulo-ferraz-oliveira/setup-beam@feature/dot_tool-versions-as-input
-        name: Should fail (no strict)
-        with:
-          version-file: '.tool-versions'
-        if: always()
-      - uses: paulo-ferraz-oliveira/setup-beam@feature/dot_tool-versions-as-input
-        name: Should fail (version collision)
-        with:
-          version-file: '.tool-versions'
-          version-type: 'strict'
-          elixir-version: 1.14.0
-        if: always()
+      - run: |
+          echo ${{ secrets.BACKSLASH }} > $GITHUB_WORKSPACE/backslash
+          cat $GITHUB_WORKSPACE/backslash
+          echo ${{ secrets.NO_WRAP }} > $GITHUB_WORKSPACE/no_wrap
+          cat $GITHUB_WORKSPACE/no_wrap
+          echo ${{ secrets.WRAP }} > $GITHUB_WORKSPACE/wrap
+          cat $GITHUB_WORKSPACE/wrap
+      # - uses: actions/checkout@v3
+      # - uses: erlef/setup-beam@v1
+      #   with:
+      #     elixir-version: '1.12'
+      #     otp-version: '25'
