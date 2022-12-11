@@ -1,21 +1,25 @@
 ---
+name: CI
+
 "on":
-  - push
-  - workflow_dispatch
+  pull_request:
+  push:
+    branches:
+      - main
 
 jobs:
   test:
-    runs-on: ubuntu-latest
+    name: test (Erlang/OTP ${{matrix.otp}}, ${{matrix.os}})
+    runs-on: ${{matrix.os}}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-22.04, ubuntu-20.04, ubuntu-18.04]
+        otp: [25, 24]
     steps:
-      - run: |
-          echo ${{ secrets.BACKSLASH }} > $GITHUB_WORKSPACE/backslash
-          cat $GITHUB_WORKSPACE/backslash
-          echo ${{ secrets.NO_WRAP }} > $GITHUB_WORKSPACE/no_wrap
-          cat $GITHUB_WORKSPACE/no_wrap
-          echo ${{ secrets.WRAP }} > $GITHUB_WORKSPACE/wrap
-          cat $GITHUB_WORKSPACE/wrap
-      # - uses: actions/checkout@v3
-      # - uses: erlef/setup-beam@v1
-      #   with:
-      #     elixir-version: '1.12'
-      #     otp-version: '25'
+      - uses: actions/checkout@v3
+      - uses: erlef/setup-beam@v1
+        with:
+          otp-version: ${{matrix.otp}}
+          rebar3-version: 3
+      - run: rebar3 version
