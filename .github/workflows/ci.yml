@@ -1,25 +1,19 @@
 ---
 name: CI
 
-"on":
-  pull_request:
-  push:
-    branches:
-      - main
+"on": push
 
 jobs:
   test:
-    name: test (Erlang/OTP ${{matrix.otp}}, ${{matrix.os}})
-    runs-on: ${{matrix.os}}
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [ubuntu-22.04, ubuntu-20.04, ubuntu-18.04]
-        otp: [25, 24]
+    runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: erlef/setup-beam@v1
+      - uses: paulo-ferraz-oliveira/setup-beam@feature/gleam-support-on-windows-for-pre-0.23
+        name: after 
         with:
-          otp-version: ${{matrix.otp}}
-          rebar3-version: 3
-      - run: rebar3 version
+          gleam-version: '0.19.0-rc3'
+          otp-version: '24'
+      - uses: erlef/setup-beam@v1
+        name: before
+        with:
+          gleam-version: '0.19.0-rc3'
+          otp-version: '24'
